@@ -87,6 +87,8 @@ interface WebAppContextType {
   setSelectedProduct: (product: Product | null) => void;
   isSidebarOpen: boolean;
   setIsSidebarOpen: (open: boolean) => void;
+  isVoiceModalOpen: boolean;
+  setIsVoiceModalOpen: (open: boolean) => void;
   showLandingPage: boolean;
   setShowLandingPage: (show: boolean) => void;
 
@@ -190,6 +192,7 @@ export const WebAppProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState<boolean>(false);
+  const [isVoiceModalOpen, setIsVoiceModalOpen] = useState<boolean>(false);
   const [showLandingPage, setShowLandingPage] = useState<boolean>(() => {
     // If no real account or entered session, show landing page
     return !sessionStorage.getItem('kalasetu_entered');
@@ -765,6 +768,8 @@ export const WebAppProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         setSelectedProduct,
         isSidebarOpen,
         setIsSidebarOpen,
+        isVoiceModalOpen,
+        setIsVoiceModalOpen,
         showLandingPage,
         setShowLandingPage,
         selectedCatalogueTemplate,

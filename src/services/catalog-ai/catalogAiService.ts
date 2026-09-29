@@ -49,9 +49,9 @@ const KNOWN_INDIAN_CRAFTS: KnownCraft[] = [
     originDistrict: 'Patan',
     giTagNumber: 'GI-232-GUJ',
     giCluster: 'Salvi Wada Craft Cluster, Patan, Gujarat',
-    productionTimeDays: 90,
-    rawMaterialCost: 22000,
-    laborDays: 90,
+    productionTimeDays: 7,
+    rawMaterialCost: 2800,
+    laborDays: 7,
   },
   {
     keywords: ['bhujodi', 'kala cotton', 'kutch', 'भुजोड़ी', 'काला कॉटन', 'कच्छ'],
@@ -129,9 +129,9 @@ const KNOWN_INDIAN_CRAFTS: KnownCraft[] = [
     originDistrict: 'Varanasi',
     giTagNumber: 'GI-99-UP',
     giCluster: 'Mubarakpur & Varanasi Weaver Guild, UP',
-    productionTimeDays: 28,
-    rawMaterialCost: 7500,
-    laborDays: 28,
+    productionTimeDays: 6,
+    rawMaterialCost: 2200,
+    laborDays: 6,
   },
   {
     keywords: ['pochampally', 'telangana', 'पोचमपल्ली', 'इकत'],
@@ -145,9 +145,9 @@ const KNOWN_INDIAN_CRAFTS: KnownCraft[] = [
     originDistrict: 'Yadadri Bhuvanagiri',
     giTagNumber: 'GI-4-TEL',
     giCluster: 'Bhoodan Pochampally Ikat Cluster, Telangana',
-    productionTimeDays: 6,
+    productionTimeDays: 5,
     rawMaterialCost: 950,
-    laborDays: 6,
+    laborDays: 5,
   }
 ];
 
@@ -189,7 +189,7 @@ export class RealCatalogAiService implements ICatalogAiService {
     if (this.isConfigured()) {
       try {
         const ai = new GoogleGenAI({ apiKey: this.apiKey });
-        const prompt = `You are the AI Smart Cataloguer for KalaSetu (SIH 2026 Problem Statement SIH26090), empowering Indian traditional artisans.
+        const prompt = `You are the AI Smart Cataloguer for KalaSetu, empowering Indian traditional artisans.
 Analyze the following natural speech or text description from an artisan:
 """${text}"""
 

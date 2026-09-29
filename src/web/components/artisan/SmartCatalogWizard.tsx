@@ -120,12 +120,12 @@ export const SmartCatalogWizard: React.FC = () => {
   const [careInstructions, setCareInstructions] = useState('Dry clean only. Preserve in unbleached muslin cloth with natural neem leaves.');
 
   // Pricing
-  const [materialCost, setMaterialCost] = useState(3800);
+  const [materialCost, setMaterialCost] = useState(1800);
   const [labourCostPerDay, setLabourCostPerDay] = useState(450);
   const [labourDays, setLabourDays] = useState(7);
-  const [packagingCost, setPackagingCost] = useState(250);
-  const [additionalCost, setAdditionalCost] = useState(150);
-  const [marginPercent, setMarginPercent] = useState(25);
+  const [packagingCost, setPackagingCost] = useState(180);
+  const [additionalCost, setAdditionalCost] = useState(100);
+  const [marginPercent, setMarginPercent] = useState(20);
 
   // Template
   const [selectedTemplate, setSelectedTemplate] = useState<string>('heritage');
@@ -259,7 +259,7 @@ export const SmartCatalogWizard: React.FC = () => {
   };
 
 
-  // Live microphone transcription with real-time text streaming
+  // Live microphone transcription
   const toggleListening = async () => {
     if (isListening) {
       if (activeRecognizer) {
@@ -269,18 +269,11 @@ export const SmartCatalogWizard: React.FC = () => {
         setActiveRecognizer(null);
       }
       setIsListening(false);
-      if (liveTranscriptInterim.trim()) {
-        setVoiceText(prev => {
-          if (!prev.includes(liveTranscriptInterim.trim())) {
-            return prev ? `${prev} ${liveTranscriptInterim.trim()}` : liveTranscriptInterim.trim();
-          }
-          return prev;
-        });
-      }
       setLiveTranscriptInterim('');
     } else {
       setIsListening(true);
       setLiveTranscriptInterim('');
+
       try {
         const recognizer = await speechService.startLiveTranscription(
           selectedLanguage,
@@ -291,16 +284,12 @@ export const SmartCatalogWizard: React.FC = () => {
             }
           },
           (error) => {
-            console.warn('[Speech] Notice:', error);
-            if (error.includes('denied') || error.includes('permission')) {
-              setIsListening(false);
-            }
+            console.log('[Speech Service Notice]', error);
           }
         );
         setActiveRecognizer(recognizer);
       } catch (err) {
         console.warn('Speech start error:', err);
-        setIsListening(false);
       }
     }
   };
@@ -323,7 +312,10 @@ export const SmartCatalogWizard: React.FC = () => {
       if (res.info.originDistrict) setOriginDistrict(res.info.originDistrict);
       if (res.info.productionTimeDays) {
         setProductionTimeDays(res.info.productionTimeDays);
-        setLabourDays(res.info.productionTimeDays);
+        const effectiveLabor = res.info.productionTimeDays > 10
+          ? Math.min(10, Math.max(3, Math.round(res.info.productionTimeDays / 10)))
+          : res.info.productionTimeDays;
+        setLabourDays(effectiveLabor);
       }
       if (res.info.descriptionEn) setDescriptionEn(res.info.descriptionEn);
       if (res.info.descriptionHi) setDescriptionHi(res.info.descriptionHi);
@@ -433,7 +425,7 @@ export const SmartCatalogWizard: React.FC = () => {
                   {t('Multimodal AI Cataloging Assistant', 'मल्टीमॉडल एआई कैटलॉगिंग सहायक')}
                 </h1>
                 <p className="text-xs text-gray-500 mt-0.5">
-                  {t('SIH 2026 Problem Statement SIH26090 — Empowering Traditional Artisans', 'पारंपरिक भारतीय कारीगरों के लिए स्मार्ट कैटलॉगिंग')}
+                  {t('Empowering Traditional Artisans with Vernacular AI', 'पारंपरिक भारतीय कारीगरों के लिए स्मार्ट कैटलॉगिंग')}
                 </p>
               </div>
             </div>
@@ -987,42 +979,26 @@ export const SmartCatalogWizard: React.FC = () => {
               </select>
             </div>
 
-            {/* Microphone Button with Animated Soundwave */}
+            {/* Clean Microphone Button */}
             <div className="p-8 rounded-3xl bg-amber-50/50 border border-amber-200 text-center space-y-4">
               <div className="relative inline-block">
-                {isListening && (
-                  <div className="absolute inset-0 rounded-full bg-red-400 animate-ping opacity-40 scale-125" />
-                )}
                 <button
                   type="button"
                   onClick={toggleListening}
-                  className={`relative w-24 h-24 rounded-full flex flex-col items-center justify-center text-white transition-all shadow-xl cursor-pointer ${
-                    isListening ? 'bg-red-600 scale-110' : 'bg-[#E11D48] hover:bg-[#BE123C]'
+                  className={`w-24 h-24 rounded-full flex flex-col items-center justify-center text-white transition-all shadow-md cursor-pointer ${
+                    isListening ? 'bg-red-600 ring-4 ring-red-200' : 'bg-[#E11D48] hover:bg-[#BE123C]'
                   }`}
                 >
-                  {isListening ? <MicOff className="w-9 h-9" /> : <Mic className="w-9 h-9" />}
+                  {isListening ? <MicOff className="w-8 h-8" /> : <Mic className="w-8 h-8" />}
                   <span className="text-[10px] font-bold mt-1">
                     {isListening ? t('Stop', 'रोकें') : t('Tap & Speak', 'बोलें')}
                   </span>
                 </button>
               </div>
 
-              {/* Live Soundwave Bars */}
-              {isListening && (
-                <div className="flex items-center justify-center gap-1.5 h-6">
-                  {[20, 36, 16, 42, 28, 50, 24, 38, 18, 44].map((h, i) => (
-                    <div
-                      key={i}
-                      style={{ height: `${h}px` }}
-                      className="w-1.5 bg-[#E11D48] rounded-full animate-pulse"
-                    />
-                  ))}
-                </div>
-              )}
-
               <p className="text-xs text-gray-600">
                 {isListening
-                  ? t('Listening live... speak naturally about materials, days taken, or craft style.', 'सुन रहे हैं... कृपया शिल्प के बारे में बोलें।')
+                  ? t('Listening... speak about your craft, materials, or days taken.', 'सुन रहे हैं... कृपया अपने शिल्प के बारे में बोलें।')
                   : t('Tap button to record voice or click a quick sample phrase below.', 'बोलने के लिए बटन दबाएं या नीचे दिए गए नमूने चुनें।')}
               </p>
 

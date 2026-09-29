@@ -19,9 +19,21 @@ import { OrdersView } from './components/customer/OrdersView';
 import { ProductDetailModal } from './components/customer/ProductDetailModal';
 import { AuthModal } from './components/AuthModal';
 import { SettingsModal } from './components/SettingsModal';
+import { VoiceTranscriberModal } from './components/common/VoiceTranscriberModal';
+import { Mic } from 'lucide-react';
 
 const AppContent: React.FC = () => {
-  const { currentRole, activeTab, showLandingPage, setShowLandingPage, isSidebarOpen, setIsSidebarOpen, t } = useWebApp();
+  const { 
+    currentRole, 
+    activeTab, 
+    showLandingPage, 
+    setShowLandingPage, 
+    isSidebarOpen, 
+    setIsSidebarOpen, 
+    isVoiceModalOpen,
+    setIsVoiceModalOpen,
+    t 
+  } = useWebApp();
 
   if (showLandingPage) {
     return (
@@ -137,7 +149,7 @@ const AppContent: React.FC = () => {
 
           <div className="pt-4 border-t border-gray-100 flex flex-wrap items-center justify-between gap-2 text-[11px] text-gray-400">
             <p>
-              Smart India Hackathon 2026 • Problem Statement SIH26090: AI-Driven Market Linkage & Smart Cataloging for Marginalized Artisans.
+              KalaSetu — Empowering Traditional Indian Artisans.
             </p>
             <p>
               100% Direct Fair Wage Guarantee • ONDC Schema Standard

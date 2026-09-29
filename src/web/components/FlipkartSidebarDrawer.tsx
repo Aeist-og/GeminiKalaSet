@@ -577,7 +577,7 @@ export const FlipkartSidebarDrawer: React.FC<FlipkartSidebarDrawerProps> = ({ is
 
         {/* Footer info in drawer */}
         <div className="p-3 border-t border-gray-100 bg-gray-50 text-[10px] text-gray-400 flex items-center justify-between shrink-0">
-          <span>KalaSetu v1.4 • SIH 26090</span>
+          <span>KalaSetu v1.4</span>
           <span className="text-gray-500 font-mono">hhhworkk@gmail.com</span>
         </div>
       </div>
